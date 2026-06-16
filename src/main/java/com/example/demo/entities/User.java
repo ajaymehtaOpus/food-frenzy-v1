@@ -39,11 +39,11 @@ public class User
 	public void setOrders(List<Orders> orders) {
 		this.orders = orders;
 	}
-	public int getU_id() {
+	public int getUId() {
 		return u_id;
 	}
-	public void setU_id(int u_id) {
-		this.u_id = u_id;
+public void setU_id(int userId) {
+		this.u_id = userId;
 	}
 	public String getUname() {
 		return uname;

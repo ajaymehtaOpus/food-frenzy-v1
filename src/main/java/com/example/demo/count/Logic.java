@@ -1,10 +1,12 @@
 package com.example.demo.count;
 public class Logic
 {
- public static double countTotal(double price,int quantity)
+ private Logic()
  {
-	 double res=price*quantity;
-	 return res;
+ }
+public static double countTotal(double price,int quantity)
+ {
+	 return price*quantity;
  }
 	
 }

@@ -18,18 +18,14 @@ public class ProductServices
 	{
 		this.productRepository.save(p);
 	}
-
-	public List<Product> getAllProducts()
+public List<Product> getAllProducts()
 	{
-		List<Product> products=(List<Product>)this.productRepository.findAll();
-		return products;
+		return (List<Product>)this.productRepository.findAll();
 	}
-
-	public Product getProduct(int id)
+public Product getProduct(int id)
 	{
 		Optional<Product> optional = this.productRepository.findById(id);
-		Product product=optional.get();
-		return product;
+		return optional.get();
 	}
 
 	public void updateproduct(Product p,int id)
