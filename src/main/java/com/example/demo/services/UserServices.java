@@ -15,23 +15,18 @@ public class UserServices
 {
 	@Autowired
 	private UserRepository userRepository;
-
-	public List<User> getAllUser()
+public List<User> getAllUser()
 	{
-		List<User> users = (List<User>) this.userRepository.findAll();
-		return users;
+		return (List<User>) this.userRepository.findAll();
 	}
-
-	public User getUser(int id)
+public User getUser(int id)
 	{
 		Optional<User> optional = this.userRepository.findById(id);
-		User user = optional.get();
-		return user;
+		return optional.get();
 	}
 	public User getUserByEmail(String email)
 	{
-	 User user=	this.userRepository.findUserByUemail(email);
-	 return user;
+	 return this.userRepository.findUserByUemail(email);
 	}
 
 	public void updateUser(User user,int id)
