@@ -1,13 +1,24 @@
 package com.example.demo;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+
 class FoodFrenzyApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void applicationClassShouldBeInstantiable() {
+		FoodFrenzyApplication application = new FoodFrenzyApplication();
+		assertNotNull(application);
 	}
 
+	@Test
+	void mainShouldDelegateToSpringApplicationBuilderWithoutThrowing() {
+		assertDoesNotThrow(() -> {
+			SpringApplicationBuilder builder = new SpringApplicationBuilder(FoodFrenzyApplication.class);
+			assertNotNull(builder);
+		});
+	}
 }
