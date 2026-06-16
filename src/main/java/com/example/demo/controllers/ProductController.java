@@ -16,6 +16,8 @@ import com.example.demo.services.ProductServices;
 @Controller
 public class ProductController 
 {
+	private static final String REDIRECT_ADMIN_SERVICES = "redirect:/admin/services";
+
 	@Autowired
 	private ProductServices productServices;
 
@@ -25,7 +27,7 @@ public class ProductController
 	{
 
 		this.productServices.addProduct(product);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 	}
 
 	//	UpdateProduct
@@ -34,14 +36,14 @@ public class ProductController
 	{
 
 		this.productServices.updateproduct(product, id);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 	}
 	//DeleteProduct
 	@GetMapping("/deleteProduct/{productId}")
 	public String delete(@PathVariable("productId") int id)
 	{
 		this.productServices.deleteProduct(id);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 	}
 	
 }

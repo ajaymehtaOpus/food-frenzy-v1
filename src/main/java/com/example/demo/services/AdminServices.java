@@ -17,15 +17,12 @@ public class AdminServices
 
 	public List<Admin>getAll()
 	{
-		 List<Admin> admins = (List<Admin>)this.adminRepository.findAll();
-		 return admins;
+		 return (List<Admin>)this.adminRepository.findAll();
 	}
-
-	public Admin getAdmin(int id)
+public Admin getAdmin(int id)
 	{
 		Optional<Admin> optional = this.adminRepository.findById(id);
-		Admin admin=optional.get();
-		return admin;
+		return optional.get();
 	}
 
 	public void update(Admin admin ,int id)
@@ -48,14 +45,9 @@ public class AdminServices
 	{
 		this.adminRepository.save(admin);
 	}
-
-	public boolean validateAdminCredentials(String email,String password)
+public boolean validateAdminCredentials(String email,String password)
 	{
 		Admin admin=adminRepository.findByAdminEmail(email);
-		if(admin!=null && admin.getAdminPassword().equals(password))
-		{
-			return true;
-		}
-		return false;
+		return admin!=null && admin.getAdminPassword().equals(password);
 	}
 }
