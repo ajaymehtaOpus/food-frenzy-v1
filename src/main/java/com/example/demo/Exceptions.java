@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class Exceptions
 {
+	private static final org.slf4j.Logger log =
+			org.slf4j.LoggerFactory.getLogger(Exceptions.class);
 
 	@ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
 
 	@ExceptionHandler(value=Exception.class) 
 	public String handler()
 	{
-		System.out.println("Exception Handled....!!!!");
+		log.info("Exception Handled....!!!!");
 		return "exception"; 
 	}
 

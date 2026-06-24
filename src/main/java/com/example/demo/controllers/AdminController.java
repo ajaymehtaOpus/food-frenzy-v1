@@ -23,6 +23,12 @@ import jakarta.validation.Valid;
 
 @Controller
 public class AdminController {
+	private static final org.slf4j.Logger log =
+			org.slf4j.LoggerFactory.getLogger(AdminController.class);
+	private static final String REDIRECT_ADMIN_SERVICES = "redirect:/admin/services";
+	private static final String ORDERS = "orders";
+	private static final String BUY_PRODUCT = "BuyProduct";
+	private static final String PRODUCT = "product";
 	@Autowired
 	private UserServices services;
 	@Autowired
@@ -32,16 +38,14 @@ public class AdminController {
 	@Autowired
 	private OrderServices orderServices;
 
-	private String email;
 	private User user;
-	@PostMapping("/adminLogin")
-	public String  getAllData(  @ModelAttribute("adminLogin") AdminLogin login, Model model)
+public String  getAllData(  @ModelAttribute("adminLogin") AdminLogin login, Model model)
 	{
-		String email=login.getEmail();
+		String adminEmail=login.getEmail();
 		String password=login.getPassword();
-		if(adminServices.validateAdminCredentials(email, password))
+		if(adminServices.validateAdminCredentials(adminEmail, password))
 		{
-			return "redirect:/admin/services";
+			return REDIRECT_ADMIN_SERVICES;
 		}
 		else {
 			model.addAttribute("error", "Invalid email or password");
@@ -54,15 +58,15 @@ public class AdminController {
 	public String userLogin( @ModelAttribute("userLogin") UserLogin login,Model model)
 	{
 
-		email=login.getUserEmail();
+		String email=login.getUserEmail();
 		String password=login.getUserPassword();
 		if(services.validateLoginCredentials(email, password))
 		{
 			user = this.services.getUserByEmail(email);
 			List<Orders> orders = this.orderServices.getOrdersForUser(user);
-			model.addAttribute("orders", orders);
+			model.addAttribute(ORDERS, orders);
 			model.addAttribute("name", user.getUname());
-			return "BuyProduct";
+			return BUY_PRODUCT;
 		}
 		else
 		{
@@ -79,15 +83,15 @@ public class AdminController {
 		if(product==null)
 		{
 			model.addAttribute("message", "SORRY...!  Product Unavailable");
-			model.addAttribute("product", product);
+			model.addAttribute(PRODUCT, product);
 			List<Orders> orders = this.orderServices.getOrdersForUser(user);
-			model.addAttribute("orders", orders);
-			return "BuyProduct";
+			model.addAttribute(ORDERS, orders);
+			return BUY_PRODUCT;
 		}
 		List<Orders> orders = this.orderServices.getOrdersForUser(user);
-		model.addAttribute("orders", orders);
-		model.addAttribute("product", product);
-		return "BuyProduct";
+		model.addAttribute(ORDERS, orders);
+		model.addAttribute(PRODUCT, product);
+		return BUY_PRODUCT;
 
 	} 
 	@GetMapping("/admin/services")
@@ -100,7 +104,7 @@ public class AdminController {
 		model.addAttribute("users",users);
 		model.addAttribute("admins", admins);
 		model.addAttribute("products", products);
-		model.addAttribute("orders", orders);
+		model.addAttribute(ORDERS, orders);
 
 		return "Admin_Page";
 	}
@@ -114,7 +118,7 @@ public class AdminController {
 	{
 
 		this.adminServices.addAdmin(admin);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 
 	}
 	@GetMapping("/updateAdmin/{adminId}")
@@ -128,13 +132,13 @@ public class AdminController {
 	public String updateAdmin(@ModelAttribute Admin admin,@PathVariable("id") int id)
 	{
 		this.adminServices.update(admin, id);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 	}
 	@GetMapping("/deleteAdmin/{id}")
 	public String deleteAdmin(@PathVariable("id") int id)
 	{
 		this.adminServices.delete(id);
-		return "redirect:/admin/services";
+		return REDIRECT_ADMIN_SERVICES;
 	}
 	@GetMapping("/addProduct")
 	public String addProduct()
@@ -146,8 +150,8 @@ public class AdminController {
 	public String updateProduct(@PathVariable("productId") int id,Model model)
 	{
 		Product product=this.productServices.getProduct(id);
-		System.out.println(product);
-		model.addAttribute("product", product);
+		log.info("{}", product);
+		model.addAttribute(PRODUCT, product);
 		return "Update_Product";
 	}
 
@@ -160,8 +164,8 @@ public class AdminController {
 	@GetMapping("/updateUser/{userId}")
 	public String updateUserPage(@PathVariable("userId") int id,Model model)
 	{
-		User user = this.services.getUser(id);
-		model.addAttribute("user", user);
+		User foundUser = this.services.getUser(id);
+		model.addAttribute("user", foundUser);
 		return "Update_User";
 	}
 
@@ -182,8 +186,8 @@ public class AdminController {
 	public String back(Model model)
 	{
 		List<Orders> orders = this.orderServices.getOrdersForUser(user);
-		model.addAttribute("orders", orders);
-		return "BuyProduct";
+		model.addAttribute(ORDERS, orders);
+		return BUY_PRODUCT;
 	}
 
 }
